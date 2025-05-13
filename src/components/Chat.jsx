@@ -1,3 +1,4 @@
+// Адаптированный Chat.jsx под мобильные размеры экрана без выхода за пределы
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, UserPlus } from 'lucide-react';
@@ -90,7 +91,7 @@ const Chat = ({ deals, updateDeal }) => {
   const inviteUrl = `${window.location.origin}/deal/${deal.id}`;
 
   return (
-    <div className="h-[100dvh] flex flex-col bg-gray-50">
+    <div className="h-[100dvh] flex flex-col overflow-hidden bg-gray-50">
       <div className="p-4 flex items-center gap-2 text-sm text-blue-600">
         <button
           onClick={() => navigate('/')}
@@ -100,7 +101,7 @@ const Chat = ({ deals, updateDeal }) => {
         </button>
       </div>
 
-      <div className="px-4">
+      <div className="px-4 overflow-y-auto pb-4">
         <div className="bg-gray-100 rounded-lg p-3 shadow-sm space-y-3 text-sm">
           <div className="flex flex-col sm:flex-row justify-between gap-2 items-start sm:items-center">
             {editName ? (
@@ -125,9 +126,7 @@ const Chat = ({ deals, updateDeal }) => {
                 <input
                   type="number"
                   value={deal.amount}
-                  onChange={(e) =>
-                    updateDeal({ ...deal, amount: e.target.value })
-                  }
+                  onChange={(e) => updateDeal({ ...deal, amount: e.target.value })}
                   onBlur={() => setEditAmount(false)}
                   autoFocus
                   className="w-24 bg-white rounded px-1"
@@ -137,8 +136,7 @@ const Chat = ({ deals, updateDeal }) => {
                   className="cursor-pointer underline-offset-2"
                   onClick={() => setEditAmount(true)}
                 >
-                  {deal.amount} {deal.currency} (
-                  {Number(deal.amount).toFixed(2)} У.Е.)
+                  {deal.amount} {deal.currency} ({Number(deal.amount).toFixed(2)} У.Е.)
                 </span>
               )}
             </div>
@@ -167,9 +165,7 @@ const Chat = ({ deals, updateDeal }) => {
                 onChange={(e) => setPhone(e.target.value)}
               />
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs gap-2">
-                <span className="text-gray-500 break-all">
-                  Ссылка: {inviteUrl}
-                </span>
+                <span className="text-gray-500 break-all">Ссылка: {inviteUrl}</span>
                 <button
                   onClick={handleInvite}
                   className="text-white bg-blue-500 px-3 py-1 rounded text-xs"
@@ -195,14 +191,12 @@ const Chat = ({ deals, updateDeal }) => {
 
           <ProgressBar
             stageIndex={deal.stageIndex}
-            onStageChange={(index) =>
-              updateDeal({ ...deal, stageIndex: index })
-            }
+            onStageChange={(index) => updateDeal({ ...deal, stageIndex: index })}
           />
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col px-4 pb-2 overflow-hidden">
+      <div className="flex-1 flex flex-col px-4 overflow-hidden">
         <div className="bg-white border rounded flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2">
             {(deal.messages || []).map((msg) => (
