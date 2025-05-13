@@ -25,38 +25,36 @@ const Header = ({ currentUserPhone, setCurrentUserPhone }) => {
   };
 
   return (
-    <header className="bg-blue-600 text-white px-4 py-3 flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
+    <header className="bg-blue-600 text-white px-4 py-3 flex flex-wrap justify-between items-center">
       <div className="flex items-center gap-2 text-white text-lg font-semibold">
         <Handshake size={24} />
         DealHub
       </div>
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
+      <div className="flex items-center gap-3 mt-2 sm:mt-0">
         {inputVisible ? (
-          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <>
             <input
               type="tel"
               placeholder="Введите номер"
-              className="flex-1 px-2 py-1 rounded text-sm text-black"
+              className="px-2 py-1 rounded text-sm text-black"
               value={phoneInput}
               onChange={(e) => setPhoneInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
               autoFocus
             />
             <button
-              className="bg-white text-blue-600 px-4 py-1 rounded text-sm font-semibold"
+              className="bg-white text-blue-600 px-3 py-1 rounded text-sm font-semibold"
               onClick={handleLogin}
             >
               Войти
             </button>
-          </div>
+          </>
         ) : (
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
-            <span className="text-white text-sm">
-              Вы вошли как: <strong>{currentUserPhone}</strong>
-            </span>
+          <div className="flex items-center gap-3 text-sm">
+            <span className="whitespace-nowrap">Вы вошли как: <strong>{currentUserPhone}</strong></span>
             <button
-              className="bg-white text-blue-600 px-4 py-1 rounded text-sm font-semibold"
+              className="bg-white text-blue-600 px-3 py-1 rounded font-semibold"
               onClick={handleLogout}
             >
               Сменить
