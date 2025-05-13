@@ -11,8 +11,8 @@ const Footer = ({ role }) => {
     );
 
   return (
-    <footer className="bg-gray-100 text-gray-600 p-4 flex justify-center items-center text-sm border-t w-full fixed bottom-0 z-50 sm:relative">
-      <div className="flex items-center gap-2 text-center">
+    <footer className="bg-gray-100 text-gray-600 px-4 py-3 text-sm border-t w-full flex justify-center items-center fixed bottom-0 z-40 h-[48px]">
+      <div className="flex items-center gap-2">
         <span className="text-gray-800 font-medium">🛠 Техподдержка</span>
         <ArrowRight size={14} className="text-gray-400" />
         {icon}
