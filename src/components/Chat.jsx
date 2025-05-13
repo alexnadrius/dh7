@@ -1,4 +1,4 @@
-// Адаптированный Chat.jsx под мобильные размеры экрана без выхода за пределы
+// Адаптированный Chat.jsx под мобильные размеры экрана
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, UserPlus } from 'lucide-react';
@@ -91,7 +91,7 @@ const Chat = ({ deals, updateDeal }) => {
   const inviteUrl = `${window.location.origin}/deal/${deal.id}`;
 
   return (
-    <div className="h-[100dvh] flex flex-col overflow-hidden bg-gray-50 pb-[48px]">
+    <div className="h-[100dvh] flex flex-col overflow-hidden bg-gray-50">
       <div className="p-4 flex items-center gap-2 text-sm text-blue-600">
         <button
           onClick={() => navigate('/')}
@@ -196,7 +196,7 @@ const Chat = ({ deals, updateDeal }) => {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col px-4 overflow-hidden relative">
+      <div className="flex-1 flex flex-col px-4 pb-[64px] overflow-hidden">
         <div className="bg-white border rounded flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2">
             {(deal.messages || []).map((msg) => (
@@ -212,11 +212,8 @@ const Chat = ({ deals, updateDeal }) => {
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Плавающий инпут */}
-        <div className="absolute bottom-2 left-0 right-0 px-4">
-          <div className="flex items-center gap-2 bg-white border rounded px-2 py-2 shadow">
+          <div className="flex items-center gap-2 border-t px-2 py-2 text-sm">
             <button onClick={() => setShowTransfer(true)}>
               <Plus className="text-blue-500" />
             </button>
@@ -225,11 +222,11 @@ const Chat = ({ deals, updateDeal }) => {
               onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
               placeholder="Введите сообщение..."
-              className="flex-1 text-sm px-3 py-2 outline-none"
+              className="flex-1 border rounded px-3 py-2 text-sm"
             />
             <button
               onClick={sendMessage}
-              className="bg-blue-500 text-white px-3 py-2 rounded text-sm"
+              className="bg-blue-500 text-white px-4 py-2 rounded"
             >
               Отправить
             </button>
