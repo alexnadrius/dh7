@@ -91,7 +91,7 @@ const Chat = ({ deals, updateDeal }) => {
   const inviteUrl = `${window.location.origin}/deal/${deal.id}`;
 
   return (
-    <div className="h-[100dvh] flex flex-col overflow-hidden bg-gray-50">
+    <div className="h-[100dvh] flex flex-col overflow-hidden bg-gray-50 pb-[48px]">
       <div className="p-4 flex items-center gap-2 text-sm text-blue-600">
         <button
           onClick={() => navigate('/')}
@@ -196,7 +196,7 @@ const Chat = ({ deals, updateDeal }) => {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col px-4 overflow-hidden">
+      <div className="flex-1 flex flex-col px-4 overflow-hidden relative">
         <div className="bg-white border rounded flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2">
             {(deal.messages || []).map((msg) => (
@@ -212,8 +212,11 @@ const Chat = ({ deals, updateDeal }) => {
               </div>
             ))}
           </div>
+        </div>
 
-          <div className="flex items-center gap-2 border-t px-2 py-2 text-sm">
+        {/* Плавающий инпут */}
+        <div className="absolute bottom-2 left-0 right-0 px-4">
+          <div className="flex items-center gap-2 bg-white border rounded px-2 py-2 shadow">
             <button onClick={() => setShowTransfer(true)}>
               <Plus className="text-blue-500" />
             </button>
@@ -222,11 +225,11 @@ const Chat = ({ deals, updateDeal }) => {
               onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
               placeholder="Введите сообщение..."
-              className="flex-1 border rounded px-3 py-2 text-sm"
+              className="flex-1 text-sm px-3 py-2 outline-none"
             />
             <button
               onClick={sendMessage}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-blue-500 text-white px-3 py-2 rounded text-sm"
             >
               Отправить
             </button>
