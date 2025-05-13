@@ -231,7 +231,7 @@ const Chat = ({ deals, updateDeal }) => {
               onClick={sendMessage}
               className="bg-blue-500 text-white px-3 py-2 rounded text-sm"
             >
-              Отправить
+              Отправить 33
             </button>
           </div>
         </div>
