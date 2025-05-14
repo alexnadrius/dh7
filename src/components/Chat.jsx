@@ -196,7 +196,7 @@ const Chat = ({ deals, updateDeal }) => {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col px-4 pb-[64px] overflow-hidden">
+      <div className="flex-1 flex flex-col px-4 pb-[200px] overflow-hidden">
         <div className="bg-white border rounded flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2">
             {(deal.messages || []).map((msg) => (
