@@ -91,7 +91,7 @@ const Chat = ({ deals, updateDeal }) => {
   const inviteUrl = `${window.location.origin}/deal/${deal.id}`;
 
   return (
-    <div className="h-[100dvh] flex flex-col overflow-hidden bg-gray-50">
+    <div className="min-h-[100dvh] flex flex-col overflow-hidden bg-gray-50">
       <div className="p-4 flex items-center gap-2 text-sm text-blue-600">
         <button
           onClick={() => navigate('/')}
