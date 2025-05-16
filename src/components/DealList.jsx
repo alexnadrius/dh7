@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Trash2, Plus } from 'lucide-react';
 import ProgressBar from './ProgressBar';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { useNavigate } from 'react-router-dom';
 
 const stages = [
   'Счёт выставлен',
@@ -60,12 +60,6 @@ const DealList = ({ deals, addDeal, deleteDeal, updateDeal, reorderDeals, curren
     reorderDeals(reordered);
   };
 
-  const handleClickOutsideForm = (e) => {
-    if (e.target.id === 'form-container') {
-      setFormVisible(false);
-    }
-  };
-
   const visibleDeals = deals.filter(
     (d) =>
       d.createdBy === currentUserPhone ||
@@ -74,51 +68,46 @@ const DealList = ({ deals, addDeal, deleteDeal, updateDeal, reorderDeals, curren
   );
 
   return (
-    <div className="p-4 space-y-4 max-w-xl mx-auto" onClick={handleClickOutsideForm} id="form-container">
+    <div className="p-4 space-y-4">
       <h2 className="text-xl font-bold mb-2">Список сделок</h2>
 
       {!formVisible ? (
         <div
-          onClick={(e) => {
-            e.stopPropagation();
-            setFormVisible(true);
-          }}
+          onClick={() => setFormVisible(true)}
           className="border rounded-md p-4 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition"
         >
           <Plus size={24} className="text-blue-500" />
         </div>
       ) : (
-        <div className="bg-white border rounded p-4 space-y-2" onClick={(e) => e.stopPropagation()}>
-          <div className="flex flex-col sm:flex-row gap-2">
+        <div className="bg-white border rounded p-4 space-y-2">
+          <div className="flex gap-2">
             <input
-              className="w-full border rounded p-2 text-sm"
+              className="flex-1 border rounded p-2 text-sm"
               placeholder="Название сделки"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <div className="flex gap-2">
-              <input
-                className="w-24 border rounded p-2 text-sm"
-                placeholder="Сумма"
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-              />
-              <select
-                className="border rounded p-2 text-sm"
-                value={currency}
-                onChange={(e) => setCurrency(e.target.value)}
-              >
-                <option value="$">$</option>
-                <option value="¥">¥</option>
-              </select>
-              <button
-                className="bg-blue-500 text-white px-3 py-2 rounded text-sm"
-                onClick={handleCreate}
-              >
-                <Plus size={16} />
-              </button>
-            </div>
+            <input
+              className="w-24 border rounded p-2 text-sm"
+              placeholder="Сумма"
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+            <select
+              className="border rounded p-2 text-sm"
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+            >
+              <option value="$">$</option>
+              <option value="¥">¥</option>
+            </select>
+            <button
+              className="bg-blue-500 text-white px-3 py-2 rounded text-sm"
+              onClick={handleCreate}
+            >
+              <Plus size={16} className="inline-block mr-1" />
+            </button>
           </div>
         </div>
       )}
@@ -153,7 +142,7 @@ const DealList = ({ deals, addDeal, deleteDeal, updateDeal, reorderDeals, curren
                           </button>
                         </div>
 
-                        <div className="flex justify-between items-center flex-wrap gap-2">
+                        <div className="flex justify-between items-center">
                           {editingNameId === deal.id ? (
                             <input
                               className="border rounded px-1 text-sm"
@@ -177,7 +166,7 @@ const DealList = ({ deals, addDeal, deleteDeal, updateDeal, reorderDeals, curren
 
                           {editingAmountId === deal.id ? (
                             <input
-                              className="border rounded px-1 w-24 text-sm"
+                              className="border rounded px-1 w-20 text-sm"
                               value={deal.amount}
                               onChange={(e) => updateDealSmart(deal.id, { amount: parseFloat(e.target.value) || 0 })}
                               onBlur={() => setEditingAmountId(null)}

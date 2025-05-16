@@ -1,16 +1,9 @@
-// Адаптированный Chat.jsx под мобильные размеры экрана
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, UserPlus } from 'lucide-react';
-import TransferModal from './TransferModal';
 import ProgressBar from './ProgressBar';
+import TransferModal from './TransferModal';
+import { Plus, ArrowLeft, UserPlus } from 'lucide-react';
 
-const Chat = ({ deals, updateDeal }) => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const deal = deals.find((d) => d.id === Number(id));
-  const currentUserPhone = localStorage.getItem('currentUserPhone');
-
+const Chat = ({ deal, updateDeal, setSelectedDealId, currentUserPhone }) => {
   const [text, setText] = useState('');
   const [showTransfer, setShowTransfer] = useState(false);
   const [editName, setEditName] = useState(false);
@@ -19,29 +12,13 @@ const Chat = ({ deals, updateDeal }) => {
   const [phone, setPhone] = useState('');
 
   useEffect(() => {
-    if (
-      deal &&
-      currentUserPhone !== deal.createdBy &&
-      currentUserPhone !== deal.buyerPhone &&
-      currentUserPhone !== deal.supplierPhone
-    ) {
-      navigate('/');
-    }
-  }, [deal, currentUserPhone]);
-
-  useEffect(() => {
-    if (deal && !deal.messages) {
+    if (!deal) return;
+    if (!deal.messages) {
       updateDeal({ ...deal, messages: [] });
     }
   }, [deal]);
 
-  if (!deal) {
-    return (
-      <div className="p-4">
-        <h2 className="text-lg font-semibold">Сделка не найдена</h2>
-      </div>
-    );
-  }
+  if (!deal) return null;
 
   const sendMessage = () => {
     if (!text.trim()) return;
@@ -68,7 +45,7 @@ const Chat = ({ deals, updateDeal }) => {
         ...(deal.messages || []),
         {
           id: Date.now(),
-          text: `💸 Переведено ${amount.toFixed(2)} У.Е.`,
+          text: `\u{1F4B8} Переведено ${amount.toFixed(2)} У.Е.`,
           sender: currentUserPhone,
         },
       ],
@@ -91,10 +68,10 @@ const Chat = ({ deals, updateDeal }) => {
   const inviteUrl = `${window.location.origin}/deal/${deal.id}`;
 
   return (
-    <div className="min-h-[100dvh] flex flex-col overflow-hidden bg-gray-50">
+    <div className="h-[100dvh] flex flex-col overflow-hidden bg-gray-50">
       <div className="p-4 flex items-center gap-2 text-sm text-blue-600">
         <button
-          onClick={() => navigate('/')}
+          onClick={() => setSelectedDealId(null)}
           className="flex items-center gap-1 hover:underline text-sm"
         >
           <ArrowLeft size={16} /> к сделкам
@@ -196,7 +173,7 @@ const Chat = ({ deals, updateDeal }) => {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col px-4 pb-[200px] overflow-hidden">
+      <div className="flex-1 flex flex-col px-4 pb-2 overflow-hidden">
         <div className="bg-white border rounded flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2">
             {(deal.messages || []).map((msg) => (
