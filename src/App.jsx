@@ -15,7 +15,7 @@ const App = () => {
     if (storedDeals) {
       setDeals(JSON.parse(storedDeals));
     } else {
-      // Добавим тестовую сделку
+      // Добавим тестовую сделку 2
       const initialDeals = [
         {
           id: 1,
