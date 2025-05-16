@@ -61,13 +61,22 @@ const App = () => {
     localStorage.setItem('deals', JSON.stringify(newOrder));
   };
 
-  const selectedDeal = deals.find((d) => d.id === selectedDealId);
+  const selectedDeal = Array.isArray(deals)
+    ? deals.find((d) => d.id === selectedDealId)
+    : null;
 
   return (
     <div className="flex flex-col min-h-screen">
       <Header currentUserPhone={currentUserPhone} setCurrentUserPhone={setCurrentUserPhone} />
       <main className="flex-1 bg-gray-50">
-        {!selectedDealId ? (
+        {selectedDealId && selectedDeal ? (
+          <Chat
+            deal={selectedDeal}
+            updateDeal={updateDeal}
+            setSelectedDealId={setSelectedDealId}
+            currentUserPhone={currentUserPhone}
+          />
+        ) : (
           <>
             <Balance deals={deals} role={'buyer'} setDeals={setDeals} />
             <DealList
@@ -80,13 +89,6 @@ const App = () => {
               setSelectedDealId={setSelectedDealId}
             />
           </>
-        ) : (
-          <Chat
-            deal={selectedDeal}
-            updateDeal={updateDeal}
-            setSelectedDealId={setSelectedDealId}
-            currentUserPhone={currentUserPhone}
-          />
         )}
       </main>
       <Footer role={'buyer'} />

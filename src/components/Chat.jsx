@@ -8,7 +8,7 @@ import ProgressBar from './ProgressBar';
 const Chat = ({ deals, updateDeal }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const deal = deals.find((d) => d.id === Number(id));
+  const deal = Array.isArray(deals) ? deals.find((d) => d.id === Number(id)) : null;
   const currentUserPhone = localStorage.getItem('currentUserPhone');
 
   const [text, setText] = useState('');
