@@ -1,10 +1,10 @@
+// Адаптированный App.jsx с автологином и тестовой сделкой
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import DealList from './components/DealList';
 import Chat from './components/Chat';
-import Balance from './components/Balance';
 
 const App = () => {
   const [deals, setDeals] = useState([]);
@@ -12,13 +12,34 @@ const App = () => {
 
   useEffect(() => {
     const storedDeals = localStorage.getItem('deals');
-    if (storedDeals) {
-      setDeals(JSON.parse(storedDeals));
+    const storedUser = localStorage.getItem('currentUserPhone');
+
+    // Автологин на "test"
+    if (!storedUser) {
+      setCurrentUserPhone('test');
+      localStorage.setItem('currentUserPhone', 'test');
+    } else {
+      setCurrentUserPhone(storedUser);
     }
 
-    const storedUser = localStorage.getItem('currentUserPhone');
-    if (storedUser) {
-      setCurrentUserPhone(storedUser);
+    // Если сделок нет — создаём одну тестовую
+    if (!storedDeals || JSON.parse(storedDeals).length === 0) {
+      const initialDeal = {
+        id: Date.now(),
+        name: 'Тестовая сделка',
+        amount: 1000,
+        currency: '$',
+        stageIndex: 0,
+        messages: [],
+        transfer: 0,
+        buyerPhone: 'test',
+        supplierPhone: 'test',
+        createdBy: 'test',
+      };
+      setDeals([initialDeal]);
+      localStorage.setItem('deals', JSON.stringify([initialDeal]));
+    } else {
+      setDeals(JSON.parse(storedDeals));
     }
   }, []);
 
@@ -58,7 +79,6 @@ const App = () => {
       <div className="flex flex-col min-h-screen">
         <Header currentUserPhone={currentUserPhone} setCurrentUserPhone={setCurrentUserPhone} />
         <main className="flex-1 bg-gray-50">
-          <Balance deals={deals} role={null} setDeals={setDeals} />
           <Routes>
             <Route
               path="/"
