@@ -15,40 +15,25 @@ const App = () => {
     if (storedDeals) {
       setDeals(JSON.parse(storedDeals));
     } else {
-      setDeals([{
-          id: 1,
-          name: 'Леггинсы 524 шт',
-          amount: 25700,
-          currency: '¥',
-          stageIndex: 0,
-          messages: [
-            { id: 1, sender: 'Иван', text: 'Здравствуйте! Хотел бы заказать 524 леггинса, как обсудим доставку?' },
-            { id: 2, sender: '供应商', text: '你好！发货可以空运或者海运，您更方便哪种方式？' },
-            { id: 3, sender: 'Иван', text: 'Предпочитаю морем, дешевле.' },
-            { id: 4, sender: '供应商', text: '好的，我安排装柜，下周发出。' }
-          ],
-          transfer: 0,
-          createdBy: 'Иван',
-          buyerPhone: 'Иван',
-          supplierPhone: '供应商'
-        }]);
-      localStorage.setItem('deals', JSON.stringify([{
-          id: 1,
-          name: 'Леггинсы 524 шт',
-          amount: 25700,
-          currency: '¥',
-          stageIndex: 0,
-          messages: [
-            { id: 1, sender: 'Иван', text: 'Здравствуйте! Хотел бы заказать 524 леггинса, как обсудим доставку?' },
-            { id: 2, sender: '供应商', text: '你好！发货可以空运或者海运，您更方便哪种方式？' },
-            { id: 3, sender: 'Иван', text: 'Предпочитаю морем, дешевле.' },
-            { id: 4, sender: '供应商', text: '好的，我安排装柜，下周发出。' }
-          ],
-          transfer: 0,
-          createdBy: 'Иван',
-          buyerPhone: 'Иван',
-          supplierPhone: '供应商'
-        }]));
+      const initialDeal = {
+        id: 1,
+        name: 'Леггинсы 524 шт',
+        amount: 25700,
+        currency: '¥',
+        stageIndex: 0,
+        messages: [
+          { id: 1, sender: 'Иван', text: 'Здравствуйте! Хотел бы заказать 524 леггинса, как обсудим доставку?' },
+          { id: 2, sender: '供应商', text: '你好！发货可以空运或者海运，您更方便哪种方式？' },
+          { id: 3, sender: 'Иван', text: 'Предпочитаю морем, дешевле.' },
+          { id: 4, sender: '供应商', text: '好的，我安排装柜，下周发出。' }
+        ],
+        transfer: 0,
+        createdBy: 'Иван',
+        buyerPhone: 'Иван',
+        supplierPhone: '供应商'
+      };
+      setDeals([initialDeal]);
+      localStorage.setItem('deals', JSON.stringify([initialDeal]));
     }
 
     const storedUser = localStorage.getItem('currentUserPhone');
