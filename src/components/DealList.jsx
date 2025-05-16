@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Trash2, Plus } from 'lucide-react';
 import ProgressBar from './ProgressBar';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { useNavigate } from 'react-router-dom';
 
 const stages = [
   'Счёт выставлен',
@@ -11,7 +12,8 @@ const stages = [
   'Взаиморасчёт произведён',
 ];
 
-const DealList = ({ deals, addDeal, deleteDeal, updateDeal, reorderDeals, currentUserPhone, setSelectedDealId }) => {
+const DealList = ({ deals, addDeal, deleteDeal, updateDeal, reorderDeals, currentUserPhone }) => {
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [currency, setCurrency] = useState('$');
@@ -126,7 +128,7 @@ const DealList = ({ deals, addDeal, deleteDeal, updateDeal, reorderDeals, curren
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        onClick={() => setSelectedDealId(deal.id)}
+                        onClick={() => navigate(`/deal/${deal.id}`)}
                         className="relative block bg-white rounded shadow p-4 space-y-2 hover:shadow-md transition cursor-pointer mb-2"
                       >
                         <div className="absolute top-2 right-2 text-red-500 hover:text-red-700 z-10">
