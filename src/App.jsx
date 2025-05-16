@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import DealList from './components/DealList';
@@ -8,40 +7,35 @@ import Balance from './components/Balance';
 
 const App = () => {
   const [deals, setDeals] = useState([]);
-  const [currentUserPhone, setCurrentUserPhone] = useState('');
+  const [currentUserPhone, setCurrentUserPhone] = useState('1'); // Автоавторизация под user 1
+  const [selectedDealId, setSelectedDealId] = useState(null);
 
   useEffect(() => {
     const storedDeals = localStorage.getItem('deals');
     if (storedDeals) {
       setDeals(JSON.parse(storedDeals));
     } else {
-      const initialDeal = {
-        id: 1,
-        name: 'Леггинсы 524 шт',
-        amount: 25700,
-        currency: '¥',
-        stageIndex: 0,
-        messages: [
-          { id: 1, sender: 'Иван', text: 'Здравствуйте! Хотел бы заказать 524 леггинса, как обсудим доставку?' },
-          { id: 2, sender: '供应商', text: '你好！发货可以空运或者海运，您更方便哪种方式？' },
-          { id: 3, sender: 'Иван', text: 'Предпочитаю морем, дешевле.' },
-          { id: 4, sender: '供应商', text: '好的，我安排装柜，下周发出。' }
-        ],
-        transfer: 0,
-        createdBy: 'Иван',
-        buyerPhone: 'Иван',
-        supplierPhone: '供应商'
-      };
-      setDeals([initialDeal]);
-      localStorage.setItem('deals', JSON.stringify([initialDeal]));
-    }
-
-    const storedUser = localStorage.getItem('currentUserPhone');
-    if (storedUser) {
-      setCurrentUserPhone(storedUser);
-    } else {
-      setCurrentUserPhone('Иван');
-      localStorage.setItem('currentUserPhone', 'Иван');
+      // Добавим тестовую сделку
+      const initialDeals = [
+        {
+          id: 1,
+          name: 'Леггинсы 524 шт',
+          amount: 25700,
+          currency: '¥',
+          stageIndex: 0,
+          messages: [
+            { id: 1, text: 'Добрый день! Отправка завтра.', sender: '中' },
+            { id: 2, text: 'Ок, жду трек.', sender: '1' },
+          ],
+          participants: [],
+          transfer: 0,
+          buyerPhone: '1',
+          supplierPhone: '中',
+          createdBy: '1',
+        },
+      ];
+      setDeals(initialDeals);
+      localStorage.setItem('deals', JSON.stringify(initialDeals));
     }
   }, []);
 
@@ -49,21 +43,12 @@ const App = () => {
     localStorage.setItem('deals', JSON.stringify(deals));
   }, [deals]);
 
-  useEffect(() => {
-    if (currentUserPhone) {
-      localStorage.setItem('currentUserPhone', currentUserPhone);
-    }
-  }, [currentUserPhone]);
+  const addDeal = (newDeal) => setDeals((prev) => [...prev, newDeal]);
 
-  const addDeal = (newDeal) => {
-    setDeals((prev) => [...prev, newDeal]);
-  };
-
-  const updateDeal = (updatedDeal) => {
+  const updateDeal = (updatedDeal) =>
     setDeals((prev) =>
       prev.map((d) => (d.id === updatedDeal.id ? updatedDeal : d))
     );
-  };
 
   const deleteDeal = (id) => {
     const updated = deals.filter((d) => d.id !== id);
@@ -76,41 +61,36 @@ const App = () => {
     localStorage.setItem('deals', JSON.stringify(newOrder));
   };
 
+  const selectedDeal = deals.find((d) => d.id === selectedDealId);
+
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        <Header currentUserPhone={currentUserPhone} setCurrentUserPhone={setCurrentUserPhone} />
-        <main className="flex-1 bg-gray-50">
-          <Balance deals={deals} role={null} setDeals={setDeals} />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <DealList
-                  deals={deals}
-                  addDeal={addDeal}
-                  deleteDeal={deleteDeal}
-                  updateDeal={updateDeal}
-                  reorderDeals={reorderDeals}
-                  currentUserPhone={currentUserPhone}
-                />
-              }
+    <div className="flex flex-col min-h-screen">
+      <Header currentUserPhone={currentUserPhone} setCurrentUserPhone={setCurrentUserPhone} />
+      <main className="flex-1 bg-gray-50">
+        {!selectedDealId ? (
+          <>
+            <Balance deals={deals} role={'buyer'} setDeals={setDeals} />
+            <DealList
+              deals={deals}
+              addDeal={addDeal}
+              deleteDeal={deleteDeal}
+              updateDeal={updateDeal}
+              reorderDeals={reorderDeals}
+              currentUserPhone={currentUserPhone}
+              setSelectedDealId={setSelectedDealId}
             />
-            <Route
-              path="/deal/:id"
-              element={
-                <Chat
-                  deals={deals}
-                  updateDeal={updateDeal}
-                  currentUserPhone={currentUserPhone}
-                />
-              }
-            />
-          </Routes>
-        </main>
-        <Footer role={null} />
-      </div>
-    </Router>
+          </>
+        ) : (
+          <Chat
+            deal={selectedDeal}
+            updateDeal={updateDeal}
+            setSelectedDealId={setSelectedDealId}
+            currentUserPhone={currentUserPhone}
+          />
+        )}
+      </main>
+      <Footer role={'buyer'} />
+    </div>
   );
 };
 
